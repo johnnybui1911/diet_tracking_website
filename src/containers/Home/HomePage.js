@@ -1,50 +1,44 @@
 import React, { useContext } from 'react'
-import { Grid, makeStyles, Typography, Divider } from '@material-ui/core'
+import {
+  Grid,
+  makeStyles,
+  Typography,
+  Divider,
+  useMediaQuery,
+  useTheme
+} from '@material-ui/core'
 import './index.scss'
 import GridList from '../../components/GridList'
 import { DataContext } from '../../contexts/dataContext'
 import { LeftBody } from './LeftBody'
 import { LeftHeader } from './LeftHeader'
+import NavBar from '../../components/NavBar'
+import { ControllerBox } from '../../components/ControllerBox'
+import { MobileNavBar } from './MobileNavBar'
 
 const useStyles = makeStyles(theme => ({
-  grid_container: {
-    flexGrow: 1
-  },
   grid_item__left: {
-    padding: theme.spacing(2),
+    backgroundColor: '#F5F5F5',
+    height: 'fit-content',
+    padding: '24px 0px'
+  },
+  containerLeft: {
     backgroundColor: '#F5F5F5'
-    // maxHeight: 530
   },
-  grid_item__left__child: {
-    padding: `${theme.spacing(4)}px 0px`
-  },
-  grid_item__left_child_sm: {
-    padding: `${theme.spacing(2)}px 0px`
-  },
-  circle_div: {
-    height: 100,
-    width: 100,
-    borderRadius: 100 / 2,
-    backgroundColor: 'grey',
-    display: 'flex',
-    alignItems: 'center',
-    textAlign: 'center',
-    color: '#fff'
+  leftBody: {
+    padding: `24px 16px 16px 16px`
   },
   circle_div__img: {
-    height: 120,
-    width: 120,
-    borderRadius: 120 / 2,
-    backgroundColor: 'red',
-    color: '#fff',
-    backgroundImage: `url(https://i.pravatar.cc/120?img=36)`
-    // margin: '0px 10px'
+    margin: '0px 24px'
   }
 }))
 
 const HomePage = () => {
-  const { data } = useContext(DataContext)
+  const theme = useTheme()
+  const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'))
   const classes = useStyles()
+
+  const { data } = useContext(DataContext)
   if (data) {
     const {
       first_name,
@@ -56,37 +50,72 @@ const HomePage = () => {
 
     const { intake_list } = data_points[currentIndex]
 
-    return (
-      <div>
-        <Grid container className={classes.grid_container}>
-          <Grid
-            item
-            xs={12}
-            md={4}
-            container
-            className={classes.grid_item__left}
-          >
-            <LeftHeader classes={classes} {...data} />
-            <Grid item xs={12}>
-              <Typography variant="h4" style={{ textAlign: 'center' }}>
-                {first_name + ' ' + last_name}
-              </Typography>
+    if (matchesDesktop) {
+      return (
+        <div>
+          <NavBar />
+          <Grid container className="grid_container">
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              container
+              className={classes.containerLeft}
+            >
+              <Grid item xs={12} container className={classes.grid_item__left}>
+                <LeftHeader classes={classes} {...data} />
+                <Grid item xs={12} style={{ paddingTop: 12 }}>
+                  <Typography className={'Headline-5--center'}>
+                    {first_name + ' ' + last_name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} style={{ padding: '32px 0px 0px 0px' }}>
+                  <Divider />
+                </Grid>
+                <LeftBody
+                  classes={classes}
+                  intake_list={intake_list}
+                  daily_goal={daily_goal}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} className={classes.grid_item__left__child}>
+            <Grid item xs={12} sm={6} md={8}>
+              <GridList data={intake_list} />
+            </Grid>
+          </Grid>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <MobileNavBar classes={classes} data={data} />
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              container
+              alignItems="center"
+              justify="center"
+              style={{ padding: '16px 0', textAlign: 'center' }}
+            >
+              <ControllerBox />
+              <LeftBody
+                classes={classes}
+                intake_list={intake_list}
+                daily_goal={daily_goal}
+              />
+            </Grid>
+            <Grid item xs={12} style={{ padding: '0px 0px 0px 0px' }}>
               <Divider />
             </Grid>
-            <LeftBody
-              classes={classes}
-              intake_list={intake_list}
-              daily_goal={daily_goal}
-            />
+            <Grid item xs={12}>
+              <GridList data={intake_list} />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={8}>
-            <GridList showSubtitle data={intake_list} />
-          </Grid>
-        </Grid>
-      </div>
-    )
+        </div>
+      )
+    }
   } else {
     return null
   }

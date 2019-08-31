@@ -11,8 +11,8 @@ export const DataContextProvider = props => {
   }, [])
 
   const addItem = item => {
-    const { data_points } = data
-    data_points[0].intake_list.push(item)
+    const { data_points, currentIndex } = data
+    data_points[currentIndex].intake_list.push(item)
     setData({ ...data, data_points })
   }
 

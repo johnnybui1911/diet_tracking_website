@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { makeStyles } from '@material-ui/core/styles'
-import { InputContext } from '../contexts/inputContext'
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -12,11 +11,10 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function() {
-  const { toggleInput } = useContext(InputContext)
+export default function(props) {
   const classes = useStyles()
   return (
-    <Fab className={classes.fab} color="primary" onClick={() => toggleInput()}>
+    <Fab {...props} className={classes.fab} color="primary">
       <AddIcon />
     </Fab>
   )

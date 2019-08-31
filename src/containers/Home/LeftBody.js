@@ -2,31 +2,34 @@ import React from 'react'
 import { Grid, Typography, LinearProgress } from '@material-ui/core'
 import { convertToUpper } from '../../assets/convertToUpper'
 import { getTotalKcal } from './getTotalKcal'
+
 export const LeftBody = props => {
   const { classes, daily_goal, intake_list } = props
   const mealList = ['breakfast', 'lunch', 'dinner', 'snack']
   const total = getTotalKcal(intake_list)
   const progress = Math.floor((total / daily_goal) * 100)
   return (
-    <Grid item xs={12} container justify="space-between" alignItems="center">
-      <Grid item xs={6} className={classes.grid_item__left_child_sm}>
-        <Typography variant="h5" className={classes.typo_bold}>
-          {total} cal
+    <Grid
+      item
+      xs={12}
+      container
+      justify="space-between"
+      alignItems="center"
+      className={classes.leftBody}
+    >
+      <Grid item xs={6} style={{ textAlign: 'left' }}>
+        <Typography className="Headline-5">{total} cal</Typography>
+        <Typography className="caption" color="textSecondary">
+          consumed
         </Typography>
-        <Typography>consumed</Typography>
       </Grid>
-      <Grid
-        item
-        xs={6}
-        className={classes.grid_item__left_child_sm}
-        style={{ textAlign: 'right' }}
-      >
-        <Typography variant="h5" className={classes.typo_bold}>
-          {daily_goal} cal
+      <Grid item xs={6} style={{ textAlign: 'right' }}>
+        <Typography className="Headline-5">{daily_goal} cal</Typography>
+        <Typography className="caption" color="textSecondary">
+          daily goal
         </Typography>
-        <Typography>daily goal</Typography>
       </Grid>
-      <Grid item xs={12} className={classes.grid_item__left_child_sm}>
+      <Grid item xs={12} style={{ padding: '16px 0px' }}>
         <LinearProgress
           variant="determinate"
           value={progress > 100 ? 100 : progress}
@@ -39,7 +42,6 @@ export const LeftBody = props => {
         style={{ textAlign: 'center' }}
         justify="center"
         alignItems="center"
-        className={classes.grid_item__left_child_sm}
       >
         {mealList.map((item, index) => {
           const total = getTotalKcal(
@@ -47,8 +49,10 @@ export const LeftBody = props => {
           )
           return (
             <Grid key={index} item xs={3}>
-              <Typography variant="h6">{total}</Typography>
-              <Typography>{convertToUpper(item)}</Typography>
+              <Typography className="Headline-6">{total}</Typography>
+              <Typography className="caption" color="textSecondary">
+                {convertToUpper(item)}
+              </Typography>
             </Grid>
           )
         })}
