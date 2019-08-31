@@ -33,7 +33,7 @@ let diet = {
     {
       //today's date
       date: today,
-      //empty, let user do the input
+      //empty, let data do the input
       intake_list: []
     },
     {
@@ -51,7 +51,7 @@ let diet = {
           serving_qty: 1,
           //that is per "serving_qty", see how Nutritionix website demo works
           nf_calories: 258,
-          //that is how much user ate
+          //that is how much data ate
           serving_size: 2,
           meal_type: 'breakfast',
           thumb:

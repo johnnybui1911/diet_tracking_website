@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import './index.scss'
 import GridList from '../../components/GridList'
-import { DataContext } from '../../contexts/dataContext'
+import { UserContext } from '../../contexts/userContext'
 import { LeftBody } from './LeftBody'
 import { LeftHeader } from './LeftHeader'
 import NavBar from '../../components/NavBar'
@@ -38,15 +38,15 @@ const HomePage = () => {
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'))
   const classes = useStyles()
 
-  const { data } = useContext(DataContext)
-  if (data) {
+  const { user } = useContext(UserContext)
+  if (user) {
     const {
       first_name,
       last_name,
       daily_goal,
       data_points,
       currentIndex
-    } = data
+    } = user
 
     const { intake_list } = data_points[currentIndex]
 
@@ -64,7 +64,7 @@ const HomePage = () => {
               className={classes.containerLeft}
             >
               <Grid item xs={12} container className={classes.grid_item__left}>
-                <LeftHeader classes={classes} {...data} />
+                <LeftHeader classes={classes} {...user} />
                 <Grid item xs={12} style={{ paddingTop: 12 }}>
                   <Typography className={'Headline-5--center'}>
                     {first_name + ' ' + last_name}
@@ -81,7 +81,7 @@ const HomePage = () => {
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6} md={8}>
-              <GridList data={intake_list} />
+              <GridList intakeList={intake_list} />
             </Grid>
           </Grid>
         </div>
@@ -89,7 +89,7 @@ const HomePage = () => {
     } else {
       return (
         <div>
-          <MobileNavBar classes={classes} data={data} />
+          <MobileNavBar classes={classes} user={user} />
           <Grid container>
             <Grid
               item
@@ -110,7 +110,7 @@ const HomePage = () => {
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              <GridList data={intake_list} />
+              <GridList intakeList={intake_list} />
             </Grid>
           </Grid>
         </div>

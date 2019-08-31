@@ -7,7 +7,7 @@ export const LeftBody = props => {
   const { classes, daily_goal, intake_list } = props
   const mealList = ['breakfast', 'lunch', 'dinner', 'snack']
   const total = getTotalKcal(intake_list)
-  const progress = Math.floor((total / daily_goal) * 100)
+  const progress = Math.round((total / daily_goal) * 100)
 
   const renderProgress = () => {
     let marginLeftProgress

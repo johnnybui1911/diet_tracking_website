@@ -1,7 +1,8 @@
 import React from 'react'
 import { Grid, Typography, ListItemText } from '@material-ui/core'
 import NavBar from '../../components/NavBar'
-export const MobileNavBar = ({ classes, data }) => {
+
+export const MobileNavBar = ({ classes, user }) => {
   return (
     <NavBar mobile>
       <Grid item xs={6} container alignItems="center">
@@ -12,7 +13,7 @@ export const MobileNavBar = ({ classes, data }) => {
         />
         <div style={{ paddingLeft: 12 }}>
           <Typography className={'Headline-6 '} style={{ color: '#fff' }}>
-            {data.first_name}
+            {user.first_name}
           </Typography>
         </div>
       </Grid>
@@ -20,7 +21,7 @@ export const MobileNavBar = ({ classes, data }) => {
         <div className="circle__div">
           <ListItemText
             primary={
-              <Typography className={'Headline-6'}>{data.weight_kg}</Typography>
+              <Typography className={'Headline-6'}>{user.weight_kg}</Typography>
             }
             secondary={<Typography className={'caption'}>kg</Typography>}
           />
@@ -28,7 +29,7 @@ export const MobileNavBar = ({ classes, data }) => {
         <div className="circle__div" style={{ marginLeft: 8 }}>
           <ListItemText
             primary={
-              <Typography className={'Headline-6'}>{data.height_cm}</Typography>
+              <Typography className={'Headline-6'}>{user.height_cm}</Typography>
             }
             secondary={<Typography className={'caption'}>cm</Typography>}
           />

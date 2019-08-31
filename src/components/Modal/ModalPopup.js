@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import classNames from 'classnames'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
@@ -15,11 +14,11 @@ import {
   Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { convertToUpper } from '../../assets/convertToUpper'
-import { DataContext } from '../../contexts/dataContext'
-import { BASE_URL, headers } from '../../api'
-import axios from 'axios'
 import { DialogTitle } from './DialogTitle'
+import axios from 'axios'
+import { convertToUpper } from '../../assets/convertToUpper'
+import { UserContext } from '../../contexts/userContext'
+import { BASE_URL, headers } from '../../api'
 import './index.scss'
 
 const useStyles = makeStyles(theme => ({
@@ -60,6 +59,10 @@ export default function ModalPopup({
   onSubmit,
   handleClose
 }) {
+  const [values, setValues] = useState({
+    serving_size: 1.0,
+    meal_type: 'breakfast'
+  })
   const [item, setItem] = useState(null)
 
   useEffect(() => {
@@ -71,7 +74,10 @@ export default function ModalPopup({
             nix_item_id: itemNameId
           }
         })
-        .then(res => setItem(res.data.foods[0]))
+        .then(res => {
+          setItem(res.data.foods[0])
+          setValues({ ...values, serving_size: res.data.foods[0].serving_qty })
+        })
         .catch(e => console.log(e))
     } else {
       fetch(`${BASE_URL}/natural/nutrients`, {
@@ -84,16 +90,13 @@ export default function ModalPopup({
         .then(res => res.json())
         .then(resJson => {
           setItem(resJson.foods[0])
+          setValues({ ...values, serving_size: resJson.foods[0].serving_qty })
         })
         .catch(e => console.log(e))
     }
   }, [])
 
-  const [values, setValues] = useState({
-    serving_size: 1.0,
-    meal_type: 'breakfast'
-  })
-  const { addItem } = useContext(DataContext)
+  const { addItem } = useContext(UserContext)
   const classes = useStyles()
 
   function handleChange(e) {
@@ -142,7 +145,8 @@ export default function ModalPopup({
       food_name,
       nf_calories,
       serving_weight_grams,
-      serving_unit
+      serving_unit,
+      serving_qty
     } = item
 
     return (
@@ -186,7 +190,7 @@ export default function ModalPopup({
                     shrink: true
                   }}
                   inputProps={{
-                    step: 0.1
+                    step: 0.5
                   }}
                   placeholder="Serving"
                   type="number"
@@ -204,7 +208,10 @@ export default function ModalPopup({
                   style={{ display: 'flex', flexDirection: 'column' }}
                   primary={
                     <Typography className={'Headline-5'}>
-                      {Math.floor(values.serving_size * serving_weight_grams)}
+                      {Math.round(
+                        (values.serving_size / serving_qty) *
+                          serving_weight_grams
+                      )}
                     </Typography>
                   }
                   secondary={
@@ -219,7 +226,9 @@ export default function ModalPopup({
                   style={{ display: 'flex', flexDirection: 'column' }}
                   primary={
                     <Typography className={'Headline-5'}>
-                      {Math.floor(values.serving_size * nf_calories)}
+                      {Math.round(
+                        (values.serving_size / serving_qty) * nf_calories
+                      )}
                     </Typography>
                   }
                   secondary={
@@ -234,9 +243,7 @@ export default function ModalPopup({
           <DialogContent style={{ overflowX: 'hidden' }}>
             <Grid container>
               <Grid item xs={12}>
-                <Typography className={classNames('overline')}>
-                  ADD TO TODAY
-                </Typography>
+                <Typography className="overline">ADD TO TODAY</Typography>
                 <FormControl
                   fullWidth
                   variant="filled"

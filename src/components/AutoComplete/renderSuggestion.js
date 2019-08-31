@@ -9,23 +9,11 @@ import {
 } from '@material-ui/core'
 import { convertToUpper } from '../../assets/convertToUpper'
 export function renderSuggestion(suggestionProps) {
-  const { handleClick, suggestion, index, itemProps, classes } = suggestionProps
+  const { suggestion, index, itemProps, classes } = suggestionProps
   const { nix_item_id, brand_name } = suggestion
   return (
-    <div key={index}>
-      <ListItem
-        {...itemProps}
-        button
-        disableGutters={true}
-        onClick={() => {
-          if (nix_item_id) {
-            handleClick(nix_item_id)
-          } else {
-            handleClick(suggestion.food_name)
-          }
-        }}
-        style={{ padding: 0 }}
-      >
+    <div {...itemProps}>
+      <ListItem button disableGutters style={{ padding: 0 }}>
         <ListItemAvatar>
           <Box m={2} className={classes.box}>
             <img

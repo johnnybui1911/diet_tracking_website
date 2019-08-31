@@ -2,7 +2,7 @@ import React from 'react'
 import './App.scss'
 import { StylesProvider, ThemeProvider } from '@material-ui/styles'
 import MainRoute from './routes'
-import { DataContextProvider } from './contexts/dataContext'
+import { UserContextProvider } from './contexts/userContext'
 import { createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
@@ -31,9 +31,9 @@ function App() {
     <div className="App">
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <DataContextProvider>
+          <UserContextProvider>
             <MainRoute />
-          </DataContextProvider>
+          </UserContextProvider>
         </ThemeProvider>
       </StylesProvider>
     </div>

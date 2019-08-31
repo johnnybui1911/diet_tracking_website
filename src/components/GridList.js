@@ -31,21 +31,21 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function GridList({ data = [] }) {
+export default function GridList({ intakeList = [] }) {
   const classes = useStyles()
 
   return (
     <div>
       <List
         subheader={
-          data.length === 0 && (
+          intakeList.length === 0 && (
             <ListSubheader component="div" id="nested-list-subheader">
               NO RESULTS
             </ListSubheader>
           )
         }
       >
-        {data.map((item, index) => {
+        {intakeList.map((item, index) => {
           const {
             food_name,
             thumb,
@@ -57,12 +57,12 @@ export default function GridList({ data = [] }) {
             serving_weight_grams
           } = item
 
-          const total_weight = Math.floor(
-            serving_weight_grams * serving_qty * serving_size
+          const total_weight = Math.round(
+            (serving_size / serving_qty) * serving_weight_grams
           )
 
-          const total_kcal = Math.floor(
-            nf_calories * serving_qty * serving_size
+          const total_kcal = Math.round(
+            (serving_size / serving_qty) * nf_calories
           )
           return (
             <div key={index}>

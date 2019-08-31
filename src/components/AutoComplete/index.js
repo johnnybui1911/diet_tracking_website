@@ -69,13 +69,12 @@ export default function AutoComplete() {
   const [searchInput, setSearchInput] = React.useState('')
   const [results, setResults] = React.useState({
     common: [],
-    branded: [],
-    isOpen: false
+    branded: []
   })
 
   const retrieveDataAsync = inputValue => {
     if (inputValue.trim() === '') {
-      setResults({ common: [], branded: [], isOpen: false })
+      setResults({ common: [], branded: [] })
     } else {
       axios
         .get(`${BASE_URL}/search/instant`, {
@@ -88,12 +87,11 @@ export default function AutoComplete() {
           const { common, branded } = res.data
           setResults({
             branded: branded.slice(0, 5),
-            common: common.slice(0, 5),
-            isOpen: true
+            common: common.slice(0, 5)
           })
         })
         .catch(e => {
-          setResults({ common: [], branded: [], isOpen: false })
+          setResults({ common: [], branded: [] })
         })
     }
   }
@@ -104,12 +102,8 @@ export default function AutoComplete() {
   const handleChangeInput = inputValue => {
     const input = inputValue
     setSearchInput(input)
-    setResults({ ...results, isOpen: false })
+    setResults({ ...results })
     delayedQuery(input.toLowerCase())
-  }
-
-  const toggleMenu = () => {
-    setResults(prev => ({ ...results, isOpen: !prev.isOpen }))
   }
 
   const handleClose = () => {
@@ -118,7 +112,7 @@ export default function AutoComplete() {
 
   const onSubmit = () => {
     setSearchInput('')
-    setResults({ common: [], branded: [], isOpen: false })
+    setResults({ common: [], branded: [] })
     setItemNameId(null)
   }
 
@@ -136,7 +130,14 @@ export default function AutoComplete() {
           onSubmit={onSubmit}
         />
       )}
-      <Downshift id="downshift-options">
+      <Downshift
+        id="downshift-options"
+        onSelect={selection => {
+          if (selection) {
+            setItemNameId(selection)
+          }
+        }}
+      >
         {({
           clearSelection,
           getInputProps,
@@ -146,8 +147,11 @@ export default function AutoComplete() {
           highlightedIndex,
           openMenu,
           selectedItem,
-          closeMenu,
-          onOuterClick
+          onOuterClick,
+          setState,
+          isOpen,
+          toggleMenu,
+          reset
         }) => {
           const { onBlur, onChange, onFocus } = getInputProps({
             onChange: event => {
@@ -168,7 +172,7 @@ export default function AutoComplete() {
               })}
 
               <div {...getMenuProps()}>
-                {results.isOpen ? (
+                {isOpen ? (
                   <Paper className={classes.paper} square>
                     <List
                       subheader={
@@ -191,6 +195,7 @@ export default function AutoComplete() {
                           suggestion,
                           index,
                           itemProps: getItemProps({
+                            key: suggestion.food_name,
                             item: suggestion.food_name
                           }),
                           highlightedIndex,
@@ -219,7 +224,8 @@ export default function AutoComplete() {
                           suggestion,
                           index,
                           itemProps: getItemProps({
-                            item: suggestion.food_name
+                            key: suggestion.nix_item_id,
+                            item: suggestion.nix_item_id
                           }),
                           highlightedIndex,
                           selectedItem,
