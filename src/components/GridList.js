@@ -40,7 +40,7 @@ export default function GridList({ data = [] }) {
         subheader={
           data.length === 0 && (
             <ListSubheader component="div" id="nested-list-subheader">
-              NO FOODS
+              NO RESULTS
             </ListSubheader>
           )
         }

@@ -8,6 +8,43 @@ export const LeftBody = props => {
   const mealList = ['breakfast', 'lunch', 'dinner', 'snack']
   const total = getTotalKcal(intake_list)
   const progress = Math.floor((total / daily_goal) * 100)
+
+  const renderProgress = () => {
+    let marginLeftProgress
+    if (progress >= 100) {
+      marginLeftProgress = 100 - 10
+    } else if (progress > 0) {
+      marginLeftProgress = progress - 3
+    } else {
+      marginLeftProgress = 0
+    }
+    return (
+      <Grid
+        item
+        xs={12}
+        container
+        style={{ padding: '16px 0px', textAlign: 'left' }}
+      >
+        <Grid item xs={12}>
+          <LinearProgress
+            variant="determinate"
+            value={progress > 100 ? 100 : progress}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            className="Subtitle-2"
+            style={{
+              marginLeft: `${marginLeftProgress}%`
+            }}
+          >
+            {progress > 100 ? 100 : progress}%
+          </Typography>
+        </Grid>
+      </Grid>
+    )
+  }
+
   return (
     <Grid
       item
@@ -29,12 +66,7 @@ export const LeftBody = props => {
           daily goal
         </Typography>
       </Grid>
-      <Grid item xs={12} style={{ padding: '16px 0px' }}>
-        <LinearProgress
-          variant="determinate"
-          value={progress > 100 ? 100 : progress}
-        />
-      </Grid>
+      {renderProgress()}
       <Grid
         item
         container

@@ -74,7 +74,7 @@ export default function AutoComplete() {
   })
 
   const retrieveDataAsync = inputValue => {
-    if (inputValue === '') {
+    if (inputValue.trim() === '') {
       setResults({ common: [], branded: [], isOpen: false })
     } else {
       axios
@@ -102,7 +102,7 @@ export default function AutoComplete() {
     .current
 
   const handleChangeInput = inputValue => {
-    const input = inputValue.trim()
+    const input = inputValue
     setSearchInput(input)
     setResults({ ...results, isOpen: false })
     delayedQuery(input.toLowerCase())
