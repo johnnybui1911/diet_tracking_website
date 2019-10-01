@@ -1,6 +1,21 @@
 # Diet Tracking Website
 A web app to monitor the clients’ daily calorie intake and keep a history of their diet
 
+## Preview
+__Desktop__
+<img src='https://i.imgur.com/CEpYVNk.png'/>
+
+<img src='https://i.imgur.com/rEXtFzP.png'/>
+
+<img src='https://i.imgur.com/pIoBYpv.png'/>
+
+__Mobile__
+<p float="left" align="middle">
+<img src='https://i.imgur.com/HyuqtuF.png' width="225"/>
+<img src='https://i.imgur.com/gGbQSWV.png' width="225"/>
+<img src='https://i.imgur.com/REdr1g5.png' width="225"/>
+</p>
+
 ## Getting started
 
 __Prerequisites__
